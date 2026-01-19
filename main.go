@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"bufio"
 	"os"
+	"github.com/scynscapa/pokedexcli/internal/pokeapi"
 )
-
-
-
-
 
 func main() {
 
 	// create a scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
 
-	conf := new(configStruct)
+	conf := new(pokeapi.ConfigStruct)
 	conf.NextURL = nil
 	conf.PrevURL = nil
 

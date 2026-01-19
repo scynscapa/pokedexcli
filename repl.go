@@ -4,32 +4,13 @@ import (
 	"fmt"
 	"strings"
 	"os"
-	"net/http"
-	"encoding/json"
-	"io"
+	"github.com/scynscapa/pokedexcli/internal/pokeapi"
 )
 
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func(config *configStruct) error
-}
-
-type configStruct struct {
-	NextURL		*string
-	PrevURL		*string
-}
-
-type locationArea struct {
-	Count		int					`json:"count"`
-	Next		*string				`json:"next"`
-	Prev		*string				`json:"previous"`
-	Results		[]locationAreaList	`json:"results"`
-}
-
-type locationAreaList struct {
-	Name		string	`json:"name"`
-	Url			string	`json:"url"`
+	callback	func(config *pokeapi.ConfigStruct) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -47,16 +28,15 @@ func getCommands() map[string]cliCommand {
 		"map": {
 			name:		"map",
 			description:"Displays next page of locations",
-			callback:	commandMap,
+			callback:	pokeapi.CommandMap,
 		},
 		"mapb": {
 			name:		"mapb",
 			description:"Displays previous page of locations",
-			callback:	commandMapB,
+			callback:	pokeapi.CommandMapB,
 		},
 	}
 }
-
 
 func cleanInput(text string) []string {
 	lowered := strings.ToLower(text)
@@ -68,13 +48,13 @@ func cleanInput(text string) []string {
 	return split
 }
 
-func commandExit(config *configStruct) error {
+func commandExit(config *pokeapi.ConfigStruct) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(config *configStruct) error {
+func commandHelp(config *pokeapi.ConfigStruct) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("usage:")
 	fmt.Println("")
@@ -83,78 +63,5 @@ func commandHelp(config *configStruct) error {
 		fmt.Printf("%s: %s\n", command.name, command.description)
 	}
 
-	return nil
-}
-
-func commandMap(config *configStruct) error {
-	url := "https://pokeapi.co/api/v2/location-area/"
-	if config.NextURL != nil {
-		url = *config.NextURL
-	}
-
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-
-	var data locationArea
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		return err
-	}
-	
-	locations := data.Results
-	for _, area := range locations {
-		fmt.Println(area.Name)
-	}
-
-	if data.Prev != nil {
-		config.PrevURL = data.Prev
-	}
-	if data.Next != nil {
-		config.NextURL = data.Next
-	}
-	
-	return nil
-}
-
-func commandMapB(config *configStruct) error {
-	if config.PrevURL == nil {
-		fmt.Println("You're on the first page")
-		return nil
-	}
-	url := config.PrevURL
-
-	res, err := http.Get(*url)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-
-	var data locationArea
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		return err
-	}
-	
-	locations := data.Results
-	for _, area := range locations {
-		fmt.Println(area.Name)
-	}
-
-	if data.Prev != nil {
-		config.PrevURL = data.Prev
-	} else {
-		config.PrevURL = nil
-	}
-	if data.Next != nil {
-		config.NextURL = data.Next
-	}
-	
 	return nil
 }
