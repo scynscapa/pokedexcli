@@ -15,6 +15,10 @@ func main() {
 	// create a scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
 
+	conf := new(configStruct)
+	conf.NextURL = nil
+	conf.PrevURL = nil
+
 	for {
 		// print prompt, scan for input
 		fmt.Print("Pokedex > ")
@@ -30,7 +34,7 @@ func main() {
 			continue
 		}
 
-		command.callback()
+		command.callback(conf)
 	}
 
 }
