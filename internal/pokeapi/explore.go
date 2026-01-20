@@ -15,14 +15,9 @@ type PokemonEncounters struct {
 	Pokemon	Pokemon	`json:"pokemon"`
 }
 
-type Pokemon struct {
-	Name	string		`json:"name"`
-}
-
 func CommandExplore(config *ConfigStruct, zone string) error {
 	url := "https://pokeapi.co/api/v2/location-area/" + zone
 
-	fmt.Println("DEBUG: ", url)
 	pokemon, err := getEncounters(config, url)
 	if err != nil {
 		return err

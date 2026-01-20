@@ -12,6 +12,7 @@ type ConfigStruct struct {
 	NextURL		*string
 	PrevURL		*string
 	Cache		*pokecache.Cache
+	Pokedex		map[string]Pokemon
 }
 
 type locationArea struct {

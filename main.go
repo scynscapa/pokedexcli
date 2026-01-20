@@ -17,6 +17,7 @@ func main() {
 	conf.NextURL = nil
 	conf.PrevURL = nil
 	conf.Cache = pokecache.NewCache(5)
+	conf.Pokedex = pokeapi.NewPokedex()
 
 	for {
 		// print prompt, scan for input
