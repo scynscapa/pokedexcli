@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"os"
 	"github.com/scynscapa/pokedexcli/internal/pokeapi"
+	"github.com/scynscapa/pokedexcli/internal/pokecache"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 	conf := new(pokeapi.ConfigStruct)
 	conf.NextURL = nil
 	conf.PrevURL = nil
+	conf.Cache = pokecache.NewCache(5)
 
 	for {
 		// print prompt, scan for input
