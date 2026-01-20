@@ -26,7 +26,7 @@ type locationAreaList struct {
 	Url			string	`json:"url"`
 }
 
-func CommandMap(config *ConfigStruct) error {
+func CommandMap(config *ConfigStruct, arg string) error {
 	url := "https://pokeapi.co/api/v2/location-area/"
 	if config.NextURL != nil {
 		url = *config.NextURL
@@ -44,7 +44,7 @@ func CommandMap(config *ConfigStruct) error {
 	return nil
 }
 
-func CommandMapB(config *ConfigStruct) error {
+func CommandMapB(config *ConfigStruct, arg string) error {
 	if config.PrevURL == nil {
 		fmt.Println("You're on the first page")
 		return nil

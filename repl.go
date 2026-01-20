@@ -10,7 +10,7 @@ import (
 type cliCommand struct {
 	name		string
 	description	string
-	callback	func(config *pokeapi.ConfigStruct) error
+	callback	func(config *pokeapi.ConfigStruct, arg1 string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -35,6 +35,11 @@ func getCommands() map[string]cliCommand {
 			description:"Displays previous page of locations",
 			callback:	pokeapi.CommandMapB,
 		},
+		"explore": {
+			name:		"explore",
+			description:"Displays list of Pokemon in area given",
+			callback:	pokeapi.CommandExplore,
+		},
 	}
 }
 
@@ -48,13 +53,13 @@ func cleanInput(text string) []string {
 	return split
 }
 
-func commandExit(config *pokeapi.ConfigStruct) error {
+func commandExit(config *pokeapi.ConfigStruct, arg string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(config *pokeapi.ConfigStruct) error {
+func commandHelp(config *pokeapi.ConfigStruct, arg string) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("usage:")
 	fmt.Println("")

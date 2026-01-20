@@ -27,13 +27,22 @@ func main() {
 		// clean input
 		commandName := cleanInput(input)[0]
 
+		argument := ""
+		if len(cleanInput(input)) > 1 {
+			argument = cleanInput(input)[1]
+		}
+
 		command, exists := getCommands()[commandName]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue
 		}
 
-		command.callback(conf)
+		err := command.callback(conf, argument)
+		if err != nil {
+			fmt.Println("ERROR: ", err)
+		}
+		
 	}
 
 }
