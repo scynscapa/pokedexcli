@@ -34,6 +34,14 @@ type Type struct {
 	Name		string		`json:"name"`
 }
 
+func CommandPokedex(config *ConfigStruct, arg string) error {
+	fmt.Println("Your Pokedex:")
+	for _, pokemon := range config.Pokedex {
+		fmt.Printf(" - %s\n", pokemon.Name)
+	}
+	return nil
+}
+
 func CommandInspect(config *ConfigStruct, toInspect string) error {
 	pokemon, exists := config.Pokedex[toInspect]
 	if !exists {
