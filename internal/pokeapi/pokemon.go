@@ -35,11 +35,6 @@ type Type struct {
 }
 
 func CommandInspect(config *ConfigStruct, toInspect string) error {
-	// if pokemon, exists := config.Pokedex[toInspect]; !exists {
-	// 	fmt.Println("You have not caught that Pokemon")
-	// 	return nil
-	// }
-
 	pokemon, exists := config.Pokedex[toInspect]
 	if !exists {
 		fmt.Println("You have not caught that Pokemon")
